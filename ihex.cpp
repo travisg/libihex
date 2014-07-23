@@ -1,4 +1,3 @@
-// vim: ts=4:sw=4:expandtab:
 /*
  * Copyright (c) 2013 Travis Geiselbrecht
  *
@@ -145,3 +144,5 @@ int iHex::Parse()
 
     return err;
 }
+
+// vim: ts=4:sw=4:expandtab:

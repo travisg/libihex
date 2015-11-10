@@ -7,7 +7,7 @@ ihextobin: ihextobin.o libihex.a
 	$(CXX) -o $@ $^
 
 clean:
-	rm -f *.o ihexlib.a ihextobin
+	rm -f *.o libihex.a ihextobin
 
 %.o: %.cpp $(wildcard *.h)
 	$(CXX) -O2 -g -Wall -std=c++11 -c $< -o $@

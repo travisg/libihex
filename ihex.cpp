@@ -112,34 +112,44 @@ int iHex::Parse()
         unsigned int type = readhex8(line, pos);
         pos += 2;
 
-        //cout << "length " << length << " address " << address << " type " << type << endl;
+        //cout << "length " << std::hex << length << " address " << std::hex << address << " type " << type << endl;
+
+        // read the data field
+        uint8_t *data = new uint8_t[length];
+
+        memset(data, 0, length);
+
+        for (size_t i = 0; i < length; i++) {
+            data[i] = readhex8(line, pos);
+            pos += 2;
+        }
+
+        unsigned int checksum = readhex8(line, pos);
+        (void)checksum;
+        //cout << "checksum " << checksum << endl;
 
         switch (type) {
             case 0: { // data record
-                uint8_t *data = new uint8_t[length];
-
-                for (size_t i = 0; i < length; i++) {
-                    data[i] = readhex8(line, pos);
-                    pos += 2;
-                }
-
-                unsigned int checksum = readhex8(line, pos);
-                (void)checksum;
-                //cout << "checksum " << checksum << endl;
-
                 if (mParseCallback)
                     mParseCallback(data, extAddress + address, length);
-
-                delete[] data;
                 break;
             }
             case 1: // end of file
                 done = true;
                 break;
-            case 2 ... 5: // unhandled
+            case 4: { // extended linear address
+                //uint32_t ext_address = (data[0] << 16) | (data[1] << 24);
+                //cout << "extended address " << std::hex << ext_address << endl;
+
+                break;
+            }
+            case 2: // extended segment address
+            case 3: // start segment address
+            case 5: // start linear address
                 cerr << "unhandled record type " << type << endl;
                 return -1;
         }
+        delete[] data;
     }
 
     return err;

@@ -36,14 +36,12 @@ static string inputfile;
 static string outputfile;
 static ofstream out;
 
-static void usage(int, char **argv)
-{
+static void usage(int, char **argv) {
     printf("usage: %s <input file> <output file>\n", argv[0]);
 
     exit(1);
 }
-void ihexcallback(const uint8_t *ptr, size_t offset, size_t len)
-{
+void ihexcallback(const uint8_t *ptr, size_t offset, size_t len) {
     //printf("callback: offset %#zx, len %zu\n", offset, len);
 
     // apply the file offset
@@ -58,9 +56,8 @@ void ihexcallback(const uint8_t *ptr, size_t offset, size_t len)
     out.write((const char *)ptr, len);
 }
 
-int main(int argc, char **argv)
-{
-    for(;;) {
+int main(int argc, char **argv) {
+    for (;;) {
         int c;
         int option_index = 0;
 
@@ -71,10 +68,10 @@ int main(int argc, char **argv)
         };
 
         c = getopt_long(argc, argv, "ho:", long_options, &option_index);
-        if(c == -1)
+        if (c == -1)
             break;
 
-        switch(c) {
+        switch (c) {
             case 'o':
                 fileoffset = strtoul(optarg, NULL, 0);
                 printf("offset %#zx\n", fileoffset);

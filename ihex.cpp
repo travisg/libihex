@@ -27,17 +27,14 @@
 
 using namespace std;
 
-iHex::iHex()
-{
+iHex::iHex() {
 }
 
-iHex::~iHex()
-{
+iHex::~iHex() {
     Close();
 }
 
-int iHex::Open(const string &name)
-{
+int iHex::Open(const string &name) {
     Close();
 
     mFile.open(name.c_str(), ios::in);
@@ -48,18 +45,15 @@ int iHex::Open(const string &name)
     return 0;
 }
 
-void iHex::Close()
-{
+void iHex::Close() {
     mFile.close();
 }
 
-void iHex::SetCallback(const iHexCallback &cb)
-{
+void iHex::SetCallback(const iHexCallback &cb) {
     mParseCallback = cb;
 }
 
-static unsigned int hexnibble(char c)
-{
+static unsigned int hexnibble(char c) {
     if (!isxdigit(c)) {
         return 0;
     }
@@ -68,20 +62,17 @@ static unsigned int hexnibble(char c)
            (c - 'A' + 10);
 }
 
-static unsigned int readhex8(const string &line, size_t offset)
-{
+static unsigned int readhex8(const string &line, size_t offset) {
     unsigned int val = hexnibble(line[offset]) << 4 | hexnibble(line[offset+1]);
     return val;
 }
 
-static unsigned int readhex16(const string &line, size_t offset)
-{
+static unsigned int readhex16(const string &line, size_t offset) {
     unsigned int val = (readhex8(line, offset) << 8) | readhex8(line, offset + 2);
     return val;
 }
 
-int iHex::Parse()
-{
+int iHex::Parse() {
     if (!mFile.is_open())
         return -1;
 
